@@ -1,0 +1,109 @@
+---
+title: "Breast cancer visualization"
+author: "Nethmi Sarandi  COHNDDS231F-008"
+date: "2023-07-27"
+output: html_document
+---
+```{r}
+library(readxl)
+library(gcookbook)
+library(ggplot2)
+```
+```{r}
+data <- read_excel("Breast Cancer.xlsx" )
+data
+```
+```{r}
+str(data)
+```
+
+```{r}
+attach(data)
+```
+
+
+```{r}
+data$gender=factor(data$gender,c(0,1),c("Male","Female"))
+
+data$hereditary_history=factor(data$hereditary_history,c(0,1),c("no_history_of_illness","has_history_of_illness"))
+
+data$marital_status =factor(data$marital_status ,c(0,1),c("no","yes"))
+
+data$abortion=factor(data$abortion,c(0,1),c("yes","no"))
+
+data$smoking=factor(data$smoking,c(0,1),c("yes","no"))
+
+data$breast_pain=factor(data$breast_pain,c(0,1),c("yes","no"))
+```
+
+```{r}
+View(data)
+```
+```{r}
+sc<- ggplot(data=data)+geom_point(mapping = aes(x=age , y=weight , shape=gender,color=gender) )
+sc
+```
+
+```{r}
+ggplot(data ,aes(x=gender , y=smoking))+ geom_col(color='darkorchid4',size=1)
+```
+
+```{r}
+breast_pain.freq=table(breast_pain)
+#Create Pie-Charts
+pie(breast_pain.freq,col=rainbow(2),main="Pie chart of breast_pain")
+```
+
+```{r}
+hist(age,col="violetred")
+abline(h=0)
+```
+
+```{r}
+ggplot(data, aes(x =weight ))  +
+  geom_density(color="midnightblue" , size=1) + 
+  labs(title = "Participants by weight")
+```
+
+```{r}
+blood.freq=table(blood)
+blood.freq
+```
+
+```{r}
+ggplot(data=data)+geom_point(mapping = aes(x=age , y=weight),color='lawngreen')+
+  facet_wrap(~blood , nrow=7)
+```
+
+```{r}
+ggplot(data=data)+geom_point(mapping = aes(x=age , y=weight),color='maroon')+
+  facet_grid(~blood )
+```
+
+```{r}
+ggplot(data=data)+geom_point(mapping = aes(x=age , y=weight),color='purple1')+
+  facet_grid(blood~Condition)
+```
+```{r}
+ggplot(data=data)+geom_point(mapping = aes(x=age , y=weight),color='orange')+
+  facet_wrap(blood~Condition )
+```
+
+
+```{r}
+ggplot(data,aes(x=age , y=weight ,fill=gender))+ geom_col()
+```
+
+```{r}
+ggplot(data, aes(x=age , y=thickness_tumor)) + geom_line(color="slateblue2", size=1)
+```
+
+```{r}
+ggplot(data ,aes(x=age , y=weight ,fill=gender)) + geom_area()
+```
+
+```{r}
+ggplot(data , aes(x=age) )+geom_histogram(fill="springgreen3"  , color="black")+
+  facet_grid(marital_status ~ .)
+```
+
